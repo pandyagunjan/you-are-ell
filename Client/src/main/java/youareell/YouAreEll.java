@@ -2,10 +2,12 @@ package youareell;
 
 import controllers.*;
 
+import java.io.IOException;
+
 public class YouAreEll {
 
     private MessageController msgCtrl;
-    private IdController idCtrl;
+    private static IdController idCtrl;
 
     public YouAreEll (MessageController m, IdController j) {
         // used j because i seems awkward
@@ -13,11 +15,14 @@ public class YouAreEll {
         this.idCtrl = j;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // hmm: is this Dependency Injection?
         YouAreEll urlhandler = new YouAreEll(new MessageController(), new IdController());
         System.out.println(urlhandler.MakeURLCall("/ids", "GET", ""));
-        System.out.println(urlhandler.MakeURLCall("/messages", "GET", ""));
+
+        String getIdsURL = urlhandler.MakeURLCall("/ids", "GET", "{\"userid\": ...}");
+        idCtrl.getIds(getIdsURL);
+      //  System.out.println(urlhandler.MakeURLCall("/messages", "GET", ""));
     }
 
     public String get_ids() {
@@ -29,6 +34,6 @@ public class YouAreEll {
     }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) {
-        return "nada";
+        return "http://zipcode.rocks:8085"+ mainurl + " "+method+" "+jpayload ;
     }
 }
