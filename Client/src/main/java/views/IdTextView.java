@@ -10,6 +10,6 @@ public class IdTextView {
 
     }
     @Override public String toString() {
-        return String.format("\nUserid: %s",id.getUserid());
+        return String.format("Userid: %s",id.getUserid());
     }
 }

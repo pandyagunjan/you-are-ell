@@ -7,19 +7,18 @@ public class TransactionController {
     private OkHttpClient client;
     private MediaType mediaType;
     public TransactionController() throws IOException {
-        client = new OkHttpClient();//.newBuilder()
-        //.connectTimeout(5, TimeUnit.MINUTES)
-        //.readTimeout(5, TimeUnit.MINUTES)
-        //.writeTimeout(5, TimeUnit.MINUTES)
-        //.build();
+        client = new OkHttpClient().newBuilder()
+        .connectTimeout(5, TimeUnit.MINUTES)
+        .readTimeout(5, TimeUnit.MINUTES)
+        .writeTimeout(5, TimeUnit.MINUTES)
+        .build();
         mediaType = MediaType.parse("application/json");
-        //Lake had:  mediaType = MediaType.get("application/json; charset=utf-8");
-        //RequestBody body = RequestBody.create(mediaType, data);
+
     }
-    public String get(String path) throws IOException {
+    public String get(String path,String method) throws IOException {
         Request request = new Request.Builder()
                 .url(rootURL + path)
-                .method("GET", null)
+                .method(method, null)
                 //.addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();
