@@ -36,7 +36,7 @@ public class TransactionController {
         return response.body().string();
     }
 
-    public void post(String path ,String postName,String gitHub) throws IOException {
+    public String post(String path ,String postName,String gitHub) throws IOException {
        // String postName=console.getStringInput("\u001B[34m Please enter Name to POST:\u001B[34m");
        // String gitHub = console.getStringInput("\u001B[34m Please enter the GIT Hub:\u001B[34m");
         Id postId= new Id(postName, "-",gitHub);
@@ -54,22 +54,22 @@ public class TransactionController {
                 .addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();
-        System.out.println(response.body().string());
+        return response.body().string();
     }
-    public void put(String path) throws IOException {
-        String response = this.get(path); // get the response of /ids
-        ArrayList<Id> idsList = idCtrl.getIds(response); // Convert all response to ArrayList
-        String putBody = "";
-        selectId = console.getStringInput("\u001B[34m Please enter Id of person to modify:\u001B[34m");
-        updateName = console.getStringInput("\u001B[34m Please enter the modified name:\u001B[34m");
-        for (int i = 0; i < idsList.size(); i++) {
-            if(idsList.get(i).getUserid().equalsIgnoreCase(selectId))
-            {
-                idsList.get(i).setName(updateName);
-                putBody= idsList.get(i).toString();
-                break;
-            }
-        }
+    public String put(String path,String putBody) throws IOException {
+//        String response = this.get(path); // get the response of /ids
+//        ArrayList<Id> idsList = idCtrl.getIds(response); // Convert all response to ArrayList
+//        String putBody = "";
+//        selectId = console.getStringInput("\u001B[34m Please enter Id of person to modify:\u001B[34m");
+//        updateName = console.getStringInput("\u001B[34m Please enter the modified name:\u001B[34m");
+//        for (int i = 0; i < idsList.size(); i++) {
+//            if(idsList.get(i).getGithub().equalsIgnoreCase(selectId))
+//            {
+//                idsList.get(i).setName(updateName);
+//                putBody= idsList.get(i).toString();
+//                break;
+//            }
+//        }
         JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody json = RequestBody.create(JSON, putBody);
         Request request = new Request.Builder()
@@ -78,7 +78,7 @@ public class TransactionController {
                 .addHeader("Content-Type", "application/json")
                 .build();
         Response responseAfterPut = client.newCall(request).execute();
-        System.out.println(responseAfterPut.body().string());
+        return responseAfterPut.body().string();
     }
 
 

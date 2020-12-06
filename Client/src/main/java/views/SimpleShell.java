@@ -28,7 +28,7 @@ public class SimpleShell {
         idCtrl=new IdController();
         ArrayList<Id> idsList = idCtrl.getIds(output);
         System.out.println(" The Users Id List is as below:");
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i <idsList.size(); i++) {
             System.out.println(new IdTextView(idsList.get(i)).toString());
         }
     }
@@ -46,7 +46,7 @@ public class SimpleShell {
     public static void main(String[] args) throws java.io.IOException {
 
         YouAreEll webber = new YouAreEll(new MessageController(), new IdController(),new TransactionController());
-        
+        String results="";
         String commandLine;
         BufferedReader console = new BufferedReader
                 (new InputStreamReader(System.in));
@@ -93,22 +93,39 @@ public class SimpleShell {
                 // ids
                 if (list.contains("ids")) {
                     if (list.get(0).equals("ids") && list.size() == 1) {
-                        String results = webber.get_ids();
+                        results = webber.get_ids();
                         SimpleShell.prettyPrintIds(results);
                         continue;
                     } else {
                         if (list.get(0).equals("ids") && list.size() == 3) {
-                            webber.postIds("/ids", list.get(1), list.get(2));
+                          //  String response = webber.getids();
+                            Boolean found=false;
+                            ArrayList<Id> idsList =  webber.getIds("/ids");
+                            for (int i = 0; i < idsList.size(); i++) {
+                                if (idsList.get(i).getGithub().equalsIgnoreCase(list.get(2))) {
+                                    idsList.get(i).setName(list.get(1));
+                                    String putBody = idsList.get(i).toString();
+                                    results = webber.putIds("/ids", putBody);
+                                    System.out.println(results);
+                                    found=true;
+                                    continue;
+                                }
+                            }
+                              if(!found)
+                              {
+                                    results=webber.postIds("/ids", list.get(1), list.get(2));
+                                    // SimpleShell.prettyPrintIds(results);
+                                    System.out.println(results);
+                                   continue;
+                                }
+                            }
                         }
-                        // String results = webber.get_ids();
-                        //SimpleShell.prettyPrintIds(results);
-                        //  continue;
 
                     }
-                }
+
                 // messages
                 if (list.contains("messages")) {
-                    String results = webber.get_messages();
+                    results = webber.get_messages();
                     SimpleShell.prettyPrintMessages(results);
                     continue;
                 }

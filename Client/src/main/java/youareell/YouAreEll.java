@@ -48,9 +48,8 @@ public class YouAreEll {
     public String MakeURLCall(String mainurl, String method, String jpayload) throws IOException {
         if (mainurl.equals("/ids")) {
                if(method.equalsIgnoreCase("GET")) {
-                String response = transactionController.get(mainurl);
-                ArrayList<Id> idsList = idCtrl.getIds(response);
-                System.out.println(" The Users Id List is as below:");
+                   ArrayList<Id> idsList = getIds(mainurl);
+                   System.out.println(" The Users Id List is as below:");
                 for (int i = 0; i < 20; i++) {
                     System.out.println(new IdTextView(idsList.get(i)).toString());
                    }
@@ -60,7 +59,7 @@ public class YouAreEll {
              //   postIds(mainurl);
             }if(method.equalsIgnoreCase("PUT"))
             {
-                transactionController.put(mainurl);
+               // transactionController.put(mainurl,body);
             }
         }
         else if (mainurl.equals("/messages")){
@@ -76,8 +75,20 @@ public class YouAreEll {
         return "nada";
     }
 
-    public void postIds(String mainurl ,String name ,String yourGitHub) throws IOException {
-         transactionController.post(mainurl,name,yourGitHub);
+    public ArrayList<Id> getIds(String mainurl) throws IOException {
+        String response = transactionController.get(mainurl);
+        ArrayList<Id> idsList = idCtrl.getIds(response);
+        return idsList;
+    }
+
+    public String postIds(String mainurl ,String name ,String yourGitHub) throws IOException {
+         return transactionController.post(mainurl,name,yourGitHub);
+
+    }
+
+    public String putIds(String mainurl ,String putBody) throws IOException {
+       // String putBody="";
+        return transactionController.put(mainurl,putBody);
 
     }
 }
