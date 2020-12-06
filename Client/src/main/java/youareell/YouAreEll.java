@@ -16,53 +16,50 @@ public class YouAreEll {
     private TransactionController transactionController;
 
 
-    public YouAreEll (MessageController m, IdController j,TransactionController t) {
+    public YouAreEll(MessageController m, IdController j, TransactionController t) {
         // used j because i seems awkward
         this.msgCtrl = m;
         this.idCtrl = j;
-        this.transactionController=t;
+        this.transactionController = t;
     }
 
     public static void main(String[] args) throws IOException {
         // hmm: is this Dependency Injection?
-        YouAreEll urlhandler = new YouAreEll(new MessageController(), new IdController() ,new TransactionController());
+        YouAreEll urlhandler = new YouAreEll(new MessageController(), new IdController(), new TransactionController());
 
         //   String getIdsURL = urlhandler.MakeURLCall("/ids", "GET", "{\"userid\": ...}");
 
-       //Calling to display the ids
+        //Calling to display the ids
 //        urlhandler.MakeURLCall("/ids", "GET", "");
 //        urlhandler.MakeURLCall("/messages", "GET", "");
-       urlhandler.MakeURLCall("/ids", "POST", "");
-       // urlhandler.MakeURLCall("/ids", "PUT", "");
+        urlhandler.MakeURLCall("/ids", "POST", "");
+        // urlhandler.MakeURLCall("/ids", "PUT", "");
 
-        }
+    }
 
     public String get_ids() throws IOException {
-             return  transactionController.get("/ids");
+        return transactionController.get("/ids");
     }
 
     public String get_messages() throws IOException {
-       return transactionController.get("/messages");
+        return transactionController.get("/messages");
     }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) throws IOException {
         if (mainurl.equals("/ids")) {
-               if(method.equalsIgnoreCase("GET")) {
-                   ArrayList<Id> idsList = getIds(mainurl);
-                   System.out.println(" The Users Id List is as below:");
+            if (method.equalsIgnoreCase("GET")) {
+                ArrayList<Id> idsList = getIds(mainurl);
+                System.out.println(" The Users Id List is as below:");
                 for (int i = 0; i < 20; i++) {
                     System.out.println(new IdTextView(idsList.get(i)).toString());
-                   }
-                 }
-            else if(method.equalsIgnoreCase("POST"))
-            {
-             //   postIds(mainurl);
-            }if(method.equalsIgnoreCase("PUT"))
-            {
-               // transactionController.put(mainurl,body);
+                }
+            } else if (method.equalsIgnoreCase("POST")) {
+                //   postIds(mainurl);
             }
-        }
-        else if (mainurl.equals("/messages")){
+            if (method.equalsIgnoreCase("PUT")) {
+                // transactionController.put(mainurl,body);
+            }
+        } else if (mainurl.equals("/messages")) {
 
             String response = transactionController.get(mainurl);
             ArrayList<Message> idsMessage = msgCtrl.getMessages(response);
@@ -81,14 +78,30 @@ public class YouAreEll {
         return idsList;
     }
 
-    public String postIds(String mainurl ,String name ,String yourGitHub) throws IOException {
-         return transactionController.post(mainurl,name,yourGitHub);
+    public String postIds(String mainurl, String name, String yourGitHub) throws IOException {
+        return transactionController.post(mainurl, name, yourGitHub);
 
     }
 
-    public String putIds(String mainurl ,String putBody) throws IOException {
-       // String putBody="";
-        return transactionController.put(mainurl,putBody);
+    public String putIds(String mainurl, String putBody) throws IOException {
+        // String putBody="";
+        return transactionController.put(mainurl, putBody);
 
+    }
+
+    public Boolean decidePutORPostIds(String name,String gitHubId) throws IOException {
+        Boolean found = false;
+        String results="";
+        ArrayList<Id> idsList = this.getIds("/ids");
+        for (int i = 0; i < idsList.size(); i++) {
+            if (idsList.get(i).getGithub().equalsIgnoreCase(gitHubId)) {
+                idsList.get(i).setName(name);
+                String putBody = idsList.get(i).toString();
+                results = putIds("/ids", putBody);
+                System.out.println(results);
+                found = false;
+            }
+        }
+        return found;
     }
 }
