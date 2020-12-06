@@ -32,18 +32,18 @@ public class YouAreEll {
        //Calling to display the ids
 //        urlhandler.MakeURLCall("/ids", "GET", "");
 //        urlhandler.MakeURLCall("/messages", "GET", "");
-       // urlhandler.MakeURLCall("/ids", "POST", "");
+       urlhandler.MakeURLCall("/ids", "POST", "");
        // urlhandler.MakeURLCall("/ids", "PUT", "");
 
         }
 
-//    public String get_ids() {
-//        return MakeURLCall("/ids", "GET", "");
-//    }
-//
-//    public String get_messages() {
-//        return MakeURLCall("/messages", "GET", "");
-//    }
+    public String get_ids() throws IOException {
+             return  transactionController.get("/ids");
+    }
+
+    public String get_messages() throws IOException {
+       return transactionController.get("/messages");
+    }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) throws IOException {
         if (mainurl.equals("/ids")) {
@@ -57,12 +57,11 @@ public class YouAreEll {
                  }
             else if(method.equalsIgnoreCase("POST"))
             {
-                transactionController.post(mainurl);
+             //   postIds(mainurl);
             }if(method.equalsIgnoreCase("PUT"))
             {
                 transactionController.put(mainurl);
             }
-
         }
         else if (mainurl.equals("/messages")){
 
@@ -75,5 +74,10 @@ public class YouAreEll {
             }
         }
         return "nada";
+    }
+
+    public void postIds(String mainurl ,String name ,String yourGitHub) throws IOException {
+         transactionController.post(mainurl,name,yourGitHub);
+
     }
 }

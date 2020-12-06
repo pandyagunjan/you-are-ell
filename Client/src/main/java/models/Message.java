@@ -1,6 +1,9 @@
 package models;
 
-/* 
+import java.sql.Timestamp;
+import java.util.Date;
+
+/*
  * POJO for an Message object
  */
 public class Message {
@@ -60,7 +63,8 @@ public class Message {
         this.fromid =fromId;
         this.toid=toId;
         this.sequence=sequence;
-        this.timestamp=timestamp;
+        Date date = new Date();
+        this.timestamp= String.valueOf((new Timestamp(date.getTime())));
     }
 
 }

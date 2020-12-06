@@ -5,20 +5,43 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import controllers.IdController;
 import controllers.MessageController;
 import controllers.TransactionController;
+import models.Id;
+import models.Message;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
 
+    private static IdController idCtrl;
+    private static MessageController msgCtrl;
 
-    public static void prettyPrint(String output) {
+
+    public static void prettyPrintIds(String output) throws JsonProcessingException {
         // yep, make an effort to format things nicely, eh?
-        System.out.println(output);
+        idCtrl=new IdController();
+        ArrayList<Id> idsList = idCtrl.getIds(output);
+        System.out.println(" The Users Id List is as below:");
+        for (int i = 0; i < 20; i++) {
+            System.out.println(new IdTextView(idsList.get(i)).toString());
+        }
+    }
+
+    public static void prettyPrintMessages(String output) throws JsonProcessingException {
+        // yep, make an effort to format things nicely, eh?
+        msgCtrl=new MessageController();
+        ArrayList<Message> idsMessage = msgCtrl.getMessages(output);
+        System.out.println("\nThe Message Id List is as below:");
+        for (int i = 0; i < idsMessage.size(); i++) {
+            System.out.println(new MessageTextView(idsMessage.get(i)).toString());
+        }
+
     }
     public static void main(String[] args) throws java.io.IOException {
 
@@ -69,15 +92,24 @@ public class SimpleShell {
 
                 // ids
                 if (list.contains("ids")) {
-               //     String results = webber.get_ids();
-               //     SimpleShell.prettyPrint(results);
-                    continue;
-                }
+                    if (list.get(0).equals("ids") && list.size() == 1) {
+                        String results = webber.get_ids();
+                        SimpleShell.prettyPrintIds(results);
+                        continue;
+                    } else {
+                        if (list.get(0).equals("ids") && list.size() == 3) {
+                            webber.postIds("/ids", list.get(1), list.get(2));
+                        }
+                        // String results = webber.get_ids();
+                        //SimpleShell.prettyPrintIds(results);
+                        //  continue;
 
+                    }
+                }
                 // messages
                 if (list.contains("messages")) {
-             //       String results = webber.get_messages();
-                //    SimpleShell.prettyPrint(results);
+                    String results = webber.get_messages();
+                    SimpleShell.prettyPrintMessages(results);
                     continue;
                 }
                 // you need to add a bunch more.

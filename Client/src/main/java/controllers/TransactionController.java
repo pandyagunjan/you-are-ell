@@ -36,23 +36,16 @@ public class TransactionController {
         return response.body().string();
     }
 
-    public void post(String path) throws IOException {
-        String postName=console.getStringInput("\u001B[34m Please enter Name to POST:\u001B[34m");
-        String gitHub = console.getStringInput("\u001B[34m Please enter the GIT Hub:\u001B[34m");
-        Id postId= new Id("-", postName,gitHub);
+    public void post(String path ,String postName,String gitHub) throws IOException {
+       // String postName=console.getStringInput("\u001B[34m Please enter Name to POST:\u001B[34m");
+       // String gitHub = console.getStringInput("\u001B[34m Please enter the GIT Hub:\u001B[34m");
+        Id postId= new Id(postName, "-",gitHub);
         JSON = MediaType.parse("application/json; charset=utf-8");
         String body = "\n{" +
                 "\n\t\"userid\": \"" + postId.getUserid() + "\"," +
                 "\n\t\"name\": \"" + postId.getName() + "\"," +
                 "\n\t\"github\": \"" + postId.getGithub() + "\"" +
                 "\n}";
-
-//        String body="{\n" +
-//                "        \"userid\": \"-\",\n" +
-//                "        \"name\": \"Pandya Gunjan\",\n" +
-//                "        \"github\": \"HubHub\"\n" +
-//                "    }";
-
 
         RequestBody json = RequestBody.create(JSON, body);
         Request request = new Request.Builder()
@@ -68,7 +61,7 @@ public class TransactionController {
         ArrayList<Id> idsList = idCtrl.getIds(response); // Convert all response to ArrayList
         String putBody = "";
         selectId = console.getStringInput("\u001B[34m Please enter Id of person to modify:\u001B[34m");
-         updateName = console.getStringInput("\u001B[34m Please enter the modified name:\u001B[34m");
+        updateName = console.getStringInput("\u001B[34m Please enter the modified name:\u001B[34m");
         for (int i = 0; i < idsList.size(); i++) {
             if(idsList.get(i).getUserid().equalsIgnoreCase(selectId))
             {
