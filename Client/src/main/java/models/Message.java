@@ -4,10 +4,16 @@ package models;
  * POJO for an Message object
  */
 public class Message {
-    String message;
-    String fromId;
-    String toId;
 
+
+    String message;
+    String fromid;
+    String toid;
+    String sequence;
+    String timestamp;
+
+    public Message() {
+    }
     public String getMessage() {
         return message;
     }
@@ -15,29 +21,46 @@ public class Message {
     public void setMessage(String message) {
         this.message = message;
     }
-
-    public String getFromId() {
-        return fromId;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setFromId(String fromId) {
-        this.fromId = fromId;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public String getToId() {
-        return toId;
+    public String getSequence() {
+        return this.sequence;
     }
 
-    public void setToId(String toId) {
-        this.toId = toId;
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
+
+    public String getFromid() {
+        return fromid;
+    }
+
+    public void setFromid(String fromId) {
+        this.fromid = fromid;
+    }
+
+    public String getToid() {
+        return toid;
+    }
+
+    public void setToId(String toid) {
+        this.toid = toid;
     }
 
 
 
-    public Message (String message, String fromId, String toId) {
-        this.message=message;
-        this.fromId =fromId;
-        this.toId=toId;
+    public Message (String sequence,String timestamp, String fromId, String toId,String message) {
+        this.sequence =message;
+        this.fromid =fromId;
+        this.toid=toId;
+        this.sequence=sequence;
+        this.timestamp=timestamp;
     }
 
 }

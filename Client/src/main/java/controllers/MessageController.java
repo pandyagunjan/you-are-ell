@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
 import models.Message;
 import okhttp3.MediaType;
@@ -17,32 +19,10 @@ public class MessageController {
     private HashSet<Message> messagesSeen;
     // why a HashSet??
 
-    public ArrayList<Message> getMessages() throws IOException {
-        String rootURL = "http://zipcode.rocks:8085/messages";
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .connectTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(5, TimeUnit.MINUTES)
-                .writeTimeout(5, TimeUnit.MINUTES)
-                .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        // RequestBody body = RequestBody.create(mediaType, data);
-        Request request = new Request.Builder()
-                .url(rootURL)
-                // .method("POST", body)
-                .method("GET", null)
-                .addHeader("Content-Type", "application/json")
-                .build();
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
-        } else {
-
-            //  ArrayList<Id> response Ids =
-            String responseInString = response.body().toString();
-
-
-            return null;
-        }
+    public ArrayList<Message> getMessages(String response) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayList<Message> idMesage = objectMapper.readValue(response, new TypeReference<ArrayList<Message>>(){});
+        return idMesage; //returns an Message object to IdTextView
     }
     public ArrayList<Message> getMessagesForId(Id Id) {
         return null;

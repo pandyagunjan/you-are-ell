@@ -3,9 +3,11 @@ package youareell;
 import controllers.*;
 import models.*;
 import views.IdTextView;
+import views.MessageTextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class YouAreEll {
 
@@ -28,7 +30,10 @@ public class YouAreEll {
         //   String getIdsURL = urlhandler.MakeURLCall("/ids", "GET", "{\"userid\": ...}");
 
        //Calling to display the ids
-        urlhandler.MakeURLCall("/ids", "GET", "");
+         urlhandler.MakeURLCall("/ids", "GET", "");
+        urlhandler.MakeURLCall("/messages", "GET", "");
+        urlhandler.MakeURLCall("/ids", "POST", "");
+        urlhandler.MakeURLCall("/ids", "PUT", "");
        // System.out.println(urlhandler.MakeURLCall("/messages", "GET", ""));
         }
 
@@ -42,19 +47,38 @@ public class YouAreEll {
 
     public String MakeURLCall(String mainurl, String method, String jpayload) throws IOException {
         if (mainurl.equals("/ids")) {
-           // idtextDisplay=new IdTextView();
-            String response = transactionController.get(mainurl ,method);
-            ArrayList<Id> idsList = idCtrl.getIds(response);
-            System.out.println(" The Users Id List is as below:");
-            for (int i = 0; i < idsList.size(); i++)
+               if(method.equalsIgnoreCase("GET")) {
+                String response = transactionController.get(mainurl);
+                ArrayList<Id> idsList = idCtrl.getIds(response);
+                System.out.println(" The Users Id List is as below:");
+                for (int i = 0; i < 20; i++) {
+                    System.out.println(new IdTextView(idsList.get(i)).toString());
+                   }
+                 }
+            else if(method.equalsIgnoreCase("POST"))
             {
-              System.out.println(new IdTextView(idsList.get(i)).toString());
+                transactionController.post(mainurl);
+            }if(method.equalsIgnoreCase("PUT"))
+            {
+                String response = transactionController.get(mainurl);
+                ArrayList<Id> idsList = idCtrl.getIds(response);
+                Random random= new Random();
+                int index =random.nextInt(idsList.size());
+                idsList.get(index).setName("TESTING PUT RANDOM");
+                String body= idsList.get(index).toString();
+                transactionController.put(mainurl,body);
             }
+
         }
         else if (mainurl.equals("/messages")){
-            // call transaction controller
-            // transaction controller returns response
-            // send response to MessageController
+
+            String response = transactionController.get(mainurl);
+            ArrayList<Message> idsMessage = msgCtrl.getMessages(response);
+
+            System.out.println("\nThe Message Id List is as below:");
+            for (int i = 0; i < idsMessage.size(); i++) {
+                System.out.println(new MessageTextView(idsMessage.get(i)).toString());
+            }
         }
         return "nada";
     }

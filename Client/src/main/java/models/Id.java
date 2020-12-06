@@ -19,7 +19,6 @@ public class Id {
     }
 
 
-
     public Id() {
     }
 
@@ -38,14 +37,19 @@ public class Id {
         this.userid = userid;
     }
 
-    public Id (String name, String githubId) {
+    public Id (String name, String userid,String github) {
         this.name=name;
-        this.userid =githubId;
+        this.userid =userid;
+        this.github=github;
     }
     @Override
     public String toString() {
-        IdTextView idTextView = new IdTextView(this);
-        return idTextView.toString();
+        return "\n{" +
+                "\n\t\"userid\": \"" + this.userid + "\"," +
+                "\n\t\"name\": \"" + this.name + "\"," +
+                "\n\t\"github\": \"" + this.github + "\"" +
+                "\n}";
     }
+
 
 }
