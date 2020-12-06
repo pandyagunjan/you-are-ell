@@ -14,7 +14,7 @@ public class YouAreEll {
     private MessageController msgCtrl;
     private static IdController idCtrl;
     private TransactionController transactionController;
-   // private IdTextView idtextDisplay;
+
 
     public YouAreEll (MessageController m, IdController j,TransactionController t) {
         // used j because i seems awkward
@@ -30,11 +30,11 @@ public class YouAreEll {
         //   String getIdsURL = urlhandler.MakeURLCall("/ids", "GET", "{\"userid\": ...}");
 
        //Calling to display the ids
-         urlhandler.MakeURLCall("/ids", "GET", "");
-        urlhandler.MakeURLCall("/messages", "GET", "");
-        urlhandler.MakeURLCall("/ids", "POST", "");
-        urlhandler.MakeURLCall("/ids", "PUT", "");
-       // System.out.println(urlhandler.MakeURLCall("/messages", "GET", ""));
+//        urlhandler.MakeURLCall("/ids", "GET", "");
+//        urlhandler.MakeURLCall("/messages", "GET", "");
+       // urlhandler.MakeURLCall("/ids", "POST", "");
+       // urlhandler.MakeURLCall("/ids", "PUT", "");
+
         }
 
 //    public String get_ids() {
@@ -60,13 +60,7 @@ public class YouAreEll {
                 transactionController.post(mainurl);
             }if(method.equalsIgnoreCase("PUT"))
             {
-                String response = transactionController.get(mainurl);
-                ArrayList<Id> idsList = idCtrl.getIds(response);
-                Random random= new Random();
-                int index =random.nextInt(idsList.size());
-                idsList.get(index).setName("TESTING PUT RANDOM");
-                String body= idsList.get(index).toString();
-                transactionController.put(mainurl,body);
+                transactionController.put(mainurl);
             }
 
         }

@@ -1,18 +1,11 @@
 package controllers;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oracle.tools.packager.IOUtils;
 import models.Id;
 import okhttp3.*;
 import okhttp3.MediaType;
-import views.IdTextView;
-
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
 import java.util.ArrayList;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -20,14 +13,17 @@ public class TransactionController {
     private String rootURL = "http://zipcode.rocks:8085";
     private OkHttpClient client;
     private MediaType JSON;
-    IdController idController;
+    private IdController idCtrl = new IdController();
+    Console console = new Console();
+    private String selectId;
+    private String updateName;
+
     public TransactionController() throws IOException {
         client = new OkHttpClient().newBuilder()
         .connectTimeout(5, TimeUnit.MINUTES)
         .readTimeout(5, TimeUnit.MINUTES)
         .writeTimeout(5, TimeUnit.MINUTES)
         .build();
-     //   mediaType = MediaType.parse("application/json");
 
     }
     public String get(String path) throws IOException {
@@ -39,16 +35,25 @@ public class TransactionController {
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
-    //post - posting something new
 
     public void post(String path) throws IOException {
-
+        String postName=console.getStringInput("\u001B[34m Please enter Name to POST:\u001B[34m");
+        String gitHub = console.getStringInput("\u001B[34m Please enter the GIT Hub:\u001B[34m");
+        Id postId= new Id("-", postName,gitHub);
         JSON = MediaType.parse("application/json; charset=utf-8");
-        String body="{\n" +
-                "        \"userid\": \"-\",\n" +
-                "        \"name\": \"Pandya Gunjan\",\n" +
-                "        \"github\": \"HubHub\"\n" +
-                "    }";
+        String body = "\n{" +
+                "\n\t\"userid\": \"" + postId.getUserid() + "\"," +
+                "\n\t\"name\": \"" + postId.getName() + "\"," +
+                "\n\t\"github\": \"" + postId.getGithub() + "\"" +
+                "\n}";
+
+//        String body="{\n" +
+//                "        \"userid\": \"-\",\n" +
+//                "        \"name\": \"Pandya Gunjan\",\n" +
+//                "        \"github\": \"HubHub\"\n" +
+//                "    }";
+
+
         RequestBody json = RequestBody.create(JSON, body);
         Request request = new Request.Builder()
                 .url(rootURL + path)
@@ -58,23 +63,30 @@ public class TransactionController {
         Response response = client.newCall(request).execute();
         System.out.println(response.body().string());
     }
-    public void put(String path ,String body) throws IOException {
+    public void put(String path) throws IOException {
+        String response = this.get(path); // get the response of /ids
+        ArrayList<Id> idsList = idCtrl.getIds(response); // Convert all response to ArrayList
+        String putBody = "";
+        selectId = console.getStringInput("\u001B[34m Please enter Id of person to modify:\u001B[34m");
+         updateName = console.getStringInput("\u001B[34m Please enter the modified name:\u001B[34m");
+        for (int i = 0; i < idsList.size(); i++) {
+            if(idsList.get(i).getUserid().equalsIgnoreCase(selectId))
+            {
+                idsList.get(i).setName(updateName);
+                putBody= idsList.get(i).toString();
+                break;
+            }
+        }
         JSON = MediaType.parse("application/json; charset=utf-8");
-       // String body=idsList.get(4).toString();
-        RequestBody json = RequestBody.create(JSON, body);
+        RequestBody json = RequestBody.create(JSON, putBody);
         Request request = new Request.Builder()
                 .url(rootURL + path)
                 .put(json)
                 .addHeader("Content-Type", "application/json")
                 .build();
-        Response response = client.newCall(request).execute();
-        System.out.println(response.body().string());
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        Id id = objectMapper.readValue(response.body().string() ,Id.class);
-//         System.out.println(id);
+        Response responseAfterPut = client.newCall(request).execute();
+        System.out.println(responseAfterPut.body().string());
     }
-
-
 
 
     public String getMessages(String path) throws IOException {
