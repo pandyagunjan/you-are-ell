@@ -7,7 +7,6 @@ public class MessageTextView {
     Message msg;
     public MessageTextView(Message msgToDisplay) {
         this.msg=msgToDisplay;
-
     }
 
       @Override public String toString() {

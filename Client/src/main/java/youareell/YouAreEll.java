@@ -7,7 +7,6 @@ import views.MessageTextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class YouAreEll {
 
@@ -38,11 +37,11 @@ public class YouAreEll {
     }
 
     public String get_ids() throws IOException {
-        return transactionController.get("/ids");
+        return transactionController.getData("/ids");
     }
 
     public String get_messages() throws IOException {
-        return transactionController.get("/messages");
+        return transactionController.getData("/messages");
     }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) throws IOException {
@@ -61,7 +60,7 @@ public class YouAreEll {
             }
         } else if (mainurl.equals("/messages")) {
 
-            String response = transactionController.get(mainurl);
+            String response = transactionController.getData(mainurl);
             ArrayList<Message> idsMessage = msgCtrl.getMessages(response);
 
             System.out.println("\nThe Message Id List is as below:");
@@ -73,7 +72,7 @@ public class YouAreEll {
     }
 
     public ArrayList<Id> getIds(String mainurl) throws IOException {
-        String response = transactionController.get(mainurl);
+        String response = transactionController.getData(mainurl);
         ArrayList<Id> idsList = idCtrl.getIds(response);
         return idsList;
     }
@@ -89,19 +88,25 @@ public class YouAreEll {
 
     }
 
-    public Boolean decidePutORPostIds(String name,String gitHubId) throws IOException {
-        Boolean found = false;
-        String results="";
-        ArrayList<Id> idsList = this.getIds("/ids");
-        for (int i = 0; i < idsList.size(); i++) {
-            if (idsList.get(i).getGithub().equalsIgnoreCase(gitHubId)) {
-                idsList.get(i).setName(name);
-                String putBody = idsList.get(i).toString();
-                results = putIds("/ids", putBody);
-                System.out.println(results);
-                found = false;
-            }
-        }
-        return found;
-    }
+//    public String postMessagesURLCall(String from, String to, String message) throws IOException {
+//        //return transactionController.post(from, to, message);
+//        getIds("/Ids"+from+)
+//        return msgCtrl.postMessage(from,to,message);
+//
+//    }
+//    public Boolean decidePutORPostIds(String name,String gitHubId) throws IOException {
+//        Boolean found = false;
+//        String results="";
+//        ArrayList<Id> idsList = this.getIds("/ids");
+//        for (int i = 0; i < idsList.size(); i++) {
+//            if (idsList.get(i).getGithub().equalsIgnoreCase(gitHubId)) {
+//                idsList.get(i).setName(name);
+//                String putBody = idsList.get(i).toString();
+//                results = putIds("/ids", putBody);
+//                System.out.println(results);
+//                found = false;
+//            }
+//        }
+//        return found;
+//    }
 }

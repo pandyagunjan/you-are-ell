@@ -21,6 +21,8 @@ public class MessageController {
 
     }
     public ArrayList<Message> getMessagesForId(Id Id) {
+
+
         return null;
     }
     public Message getMessageForSequence(String seq) {
@@ -31,6 +33,7 @@ public class MessageController {
     }
 
     public Message postMessage(Id myId, Id toId, Message msg) {
+
         return null;
     }
  

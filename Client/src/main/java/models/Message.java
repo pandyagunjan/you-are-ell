@@ -7,16 +7,12 @@ import java.util.Date;
  * POJO for an Message object
  */
 public class Message {
-
-
     String message;
     String fromid;
     String toid;
     String sequence;
     String timestamp;
 
-    public Message() {
-    }
     public String getMessage() {
         return message;
     }
@@ -24,6 +20,31 @@ public class Message {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public String getFromid() {
+        return fromid;
+    }
+
+    public void setFromid(String fromid) {
+        this.fromid = fromid;
+    }
+
+    public String getToid() {
+        return toid;
+    }
+
+    public void setToid(String toid) {
+        this.toid = toid;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
+
     public String getTimestamp() {
         return timestamp;
     }
@@ -32,33 +53,10 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public String getSequence() {
-        return this.sequence;
+    public Message() {
     }
 
-    public void setSequence(String sequence) {
-        this.sequence = sequence;
-    }
-
-    public String getFromid() {
-        return fromid;
-    }
-
-    public void setFromid(String fromId) {
-        this.fromid = fromid;
-    }
-
-    public String getToid() {
-        return toid;
-    }
-
-    public void setToId(String toid) {
-        this.toid = toid;
-    }
-
-
-
-    public Message (String sequence,String timestamp, String fromId, String toId,String message) {
+    public Message (String sequence, String fromId, String toId,String message) {
         this.sequence =message;
         this.fromid =fromId;
         this.toid=toId;

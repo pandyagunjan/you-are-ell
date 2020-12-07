@@ -18,7 +18,6 @@ public class Id {
         this.github = github;
     }
 
-
     public Id() {
     }
 

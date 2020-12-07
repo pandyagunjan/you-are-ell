@@ -3,11 +3,7 @@ import models.Id;
 import okhttp3.*;
 import okhttp3.MediaType;
 import java.io.*;
-
-import java.util.ArrayList;
-
 import java.util.concurrent.TimeUnit;
-
 
 public class TransactionController {
     private String rootURL = "http://zipcode.rocks:8085";
@@ -26,11 +22,10 @@ public class TransactionController {
         .build();
 
     }
-    public String get(String path) throws IOException {
+    public String getData(String path) throws IOException {
         Request request = new Request.Builder()
                 .url(rootURL + path)
                 .method("GET", null)
-                //.addHeader("Content-Type", "application/json")
                 .build();
         Response response = client.newCall(request).execute();
         return response.body().string();
@@ -81,14 +76,4 @@ public class TransactionController {
         return responseAfterPut.body().string();
     }
 
-
-    public String getMessages(String path) throws IOException {
-        Request request = new Request.Builder()
-                .url(rootURL + path)
-                .method("GET", null)
-                //.addHeader("Content-Type", "application/json")
-                .build();
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }
 }

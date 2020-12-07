@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import controllers.IdController;
 import controllers.MessageController;
@@ -21,7 +19,7 @@ public class SimpleShell {
 
     private static IdController idCtrl;
     private static MessageController msgCtrl;
-
+    private static TransactionController transactionController;
 
     public static void prettyPrintIds(String output) throws JsonProcessingException {
         // yep, make an effort to format things nicely, eh?
@@ -44,7 +42,8 @@ public class SimpleShell {
 
     }
     public static void main(String[] args) throws java.io.IOException {
-
+        transactionController=new TransactionController();
+        msgCtrl=new MessageController();
         YouAreEll webber = new YouAreEll(new MessageController(), new IdController(),new TransactionController());
         String results="";
         String commandLine;
@@ -59,7 +58,6 @@ public class SimpleShell {
             //read what the user enters
             System.out.println("cmd? ");
             commandLine = console.readLine();
-
             //input parsed into array of strings(command and arguments)
             String[] commands = commandLine.split(" ");
             List<String> list = new ArrayList<String>();
@@ -71,7 +69,6 @@ public class SimpleShell {
                 System.out.println("bye!");
                 break;
             }
-
             //loop through to see if parsing worked
             for (int i = 0; i < commands.length; i++) {
                 //System.out.println(commands[i]); //***check to see if parsing/split worked***
@@ -87,9 +84,7 @@ public class SimpleShell {
                         System.out.println((index++) + " " + s);
                     continue;
                 }
-
                 // Specific Commands.
-
                 // ids
                 if (list.contains("ids")) {
                     if (list.get(0).equals("ids") && list.size() == 1) {
@@ -122,13 +117,39 @@ public class SimpleShell {
                         }
 
                     }
-
                 // messages
                 if (list.contains("messages")) {
-                    results = webber.get_messages();
-                    SimpleShell.prettyPrintMessages(results);
-                    continue;
+                    if (list.get(0).equals("messages") && list.size() == 1) {
+                        results = webber.get_messages();
+                        SimpleShell.prettyPrintMessages(results);
+                        continue;
+                    } else {
+                        if (list.get(0).equals("messages") && list.size() == 2) {
+                            String response = transactionController.getData("/ids/" + list.get(1) + "/messages");
+                            ArrayList<Message> idsMessage = msgCtrl.getMessages(response);
+                            for (int i = 0; i < idsMessage.size(); i++) {
+                                System.out.println(new MessageTextView(idsMessage.get(i)).toString());
+                            }
+                        }
+                    }
+
                 }
+//                if (list.contains("send")) {
+//                    String fromId = list.get(1);
+//                    String message = list.get(2);
+//                    String toId = list.get(4);
+//                    int messageEnd = 2;
+//                    for (int i=0; i<list.size(); i++){
+//                        if (list.get(i).equals("to")) messageEnd = i-1;
+//                    }
+//                    if (messageEnd > 2){
+//                        for (int i=3; i<=messageEnd; i++){
+//                            message += list.get(i);
+//                        }
+//                    }
+//                    webber.postMessagesURLCall(fromId, toId, message);
+//                    continue;
+//                }
                 // you need to add a bunch more.
 
                 //!! command returns the last command in history
@@ -157,8 +178,6 @@ public class SimpleShell {
                 while ((line = br.readLine()) != null)
                     System.out.println(line);
                 br.close();
-
-
             }
 
             //catch ioexception, output appropriate message, resume waiting for input
@@ -175,7 +194,6 @@ public class SimpleShell {
              */
 
         }
-
 
     }
 
