@@ -31,7 +31,7 @@ public class YouAreEll {
         //Calling to display the ids
 //        urlhandler.MakeURLCall("/ids", "GET", "");
 //        urlhandler.MakeURLCall("/messages", "GET", "");
-        urlhandler.MakeURLCall("/ids", "POST", "");
+      //  urlhandler.MakeURLCall("/ids", "POST", "");
         // urlhandler.MakeURLCall("/ids", "PUT", "");
 
     }
@@ -77,8 +77,9 @@ public class YouAreEll {
         return idsList;
     }
 
-    public String postIds(String mainurl, String name, String yourGitHub) throws IOException {
-        return transactionController.post(mainurl, name, yourGitHub);
+    public Id postIds(String mainurl, String name, String yourGitHub) throws IOException {
+        Id idOBject= new Id(name,"-",yourGitHub);
+        return idCtrl.postId(idOBject);
 
     }
 

@@ -108,10 +108,9 @@ public class SimpleShell {
                             }
                               if(!found)
                               {
-                                    results=webber.postIds("/ids", list.get(1), list.get(2));
-                                    // SimpleShell.prettyPrintIds(results);
-                                    System.out.println(results);
-                                   continue;
+                                  Id Idreturned=webber.postIds("/ids", list.get(1), list.get(2));
+                                  SimpleShell.prettyPrintIds(Idreturned);
+                                  continue;
                                 }
                             }
                         }
@@ -195,6 +194,12 @@ public class SimpleShell {
 
         }
 
+    }
+
+    private static void prettyPrintIds(Id idReturned) {
+        IdTextView toView= new IdTextView(idReturned);
+        System.out.println("\nPosted ID on the server:");
+        System.out.println(toView.toString());
     }
 
 }
