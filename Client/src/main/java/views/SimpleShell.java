@@ -16,7 +16,7 @@ import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
-
+    static Boolean found=false;
     private static IdController idCtrl;
     private static MessageController msgCtrl;
     private static TransactionController transactionController;
@@ -93,29 +93,28 @@ public class SimpleShell {
                         continue;
                     } else {
                         if (list.get(0).equals("ids") && list.size() == 3) {
-                          //  String response = webber.getids();
-                            Boolean found=false;
-                            ArrayList<Id> idsList =  webber.getIds("/ids");
-                            for (int i = 0; i < idsList.size(); i++) {
-                                if (idsList.get(i).getGithub().equalsIgnoreCase(list.get(2))) {
-                                    idsList.get(i).setName(list.get(1));
-                                    String putBody = idsList.get(i).toString();
-                                    results = webber.putIds("/ids", putBody);
-                                    System.out.println(results);
-                                    found=true;
-                                    continue;
-                                }
-                            }
-                              if(!found)
-                              {
+
+                           // ArrayList<Id> idsList =  webber.getIds("/ids");
+                      //      Id IdForPut= webber.putIds("/ids",list.get(2), list.get(1));
+
+                          //  results = webber.putIds("/ids", putBody);
+                         //   System.out.println("\nPUT ID on the server:");
+                        //    SimpleShell.prettyPrintIds(IdForPut);
+//                            found=true;
+//                            continue;
+//
+//                            }
+//                              if(!found)
+//                              {
                                   Id Idreturned=webber.postIds("/ids", list.get(1), list.get(2));
+                                  System.out.println("\nPosted ID on the server:");
                                   SimpleShell.prettyPrintIds(Idreturned);
                                   continue;
                                 }
                             }
                         }
 
-                    }
+                //    }
                 // messages
                 if (list.contains("messages")) {
                     if (list.get(0).equals("messages") && list.size() == 1) {
@@ -198,7 +197,7 @@ public class SimpleShell {
 
     private static void prettyPrintIds(Id idReturned) {
         IdTextView toView= new IdTextView(idReturned);
-        System.out.println("\nPosted ID on the server:");
+
         System.out.println(toView.toString());
     }
 

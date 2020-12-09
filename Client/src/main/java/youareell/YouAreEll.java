@@ -31,7 +31,7 @@ public class YouAreEll {
         //Calling to display the ids
 //        urlhandler.MakeURLCall("/ids", "GET", "");
 //        urlhandler.MakeURLCall("/messages", "GET", "");
-      //  urlhandler.MakeURLCall("/ids", "POST", "");
+        //  urlhandler.MakeURLCall("/ids", "POST", "");
         // urlhandler.MakeURLCall("/ids", "PUT", "");
 
     }
@@ -78,15 +78,26 @@ public class YouAreEll {
     }
 
     public Id postIds(String mainurl, String name, String yourGitHub) throws IOException {
-        Id idOBject= new Id(name,"-",yourGitHub);
+        Id idOBject = new Id(name, "-", yourGitHub);
         return idCtrl.postId(idOBject);
 
     }
 
-    public String putIds(String mainurl, String putBody) throws IOException {
+    public Id putIds(String mainurl, String hubId, String userName) throws IOException {
         // String putBody="";
-        return transactionController.put(mainurl, putBody);
+        ArrayList<Id> idsList = getIds("/ids");
+        //   webber.putIds("/ids",list.get(2));
 
+        for (int i = 0; i < idsList.size(); i++) {
+            if (idsList.get(i).getGithub().equalsIgnoreCase(hubId)) {
+                idsList.get(i).setName(userName);
+                //String putBody = idsList.get(i).toString();
+                return idsList.get(i);
+            }
+
+
+        }
+        return null;
     }
 
 //    public String postMessagesURLCall(String from, String to, String message) throws IOException {
@@ -110,4 +121,7 @@ public class YouAreEll {
 //        }
 //        return found;
 //    }
-}
+
+    }
+
+
