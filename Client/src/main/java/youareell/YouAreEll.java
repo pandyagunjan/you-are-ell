@@ -31,8 +31,8 @@ public class YouAreEll {
         //Calling to display the ids
 //        urlhandler.MakeURLCall("/ids", "GET", "");
 //        urlhandler.MakeURLCall("/messages", "GET", "");
-        //  urlhandler.MakeURLCall("/ids", "POST", "");
-        // urlhandler.MakeURLCall("/ids", "PUT", "");
+//        urlhandler.MakeURLCall("/ids", "POST", "");
+//        urlhandler.MakeURLCall("/ids", "PUT", "");
 
     }
 
@@ -77,27 +77,19 @@ public class YouAreEll {
         return idsList;
     }
 
-    public Id postIds(String mainurl, String name, String yourGitHub) throws IOException {
+    public Id postIds(String name, String yourGitHub) throws IOException {
         Id idOBject = new Id(name, "-", yourGitHub);
         return idCtrl.postId(idOBject);
 
     }
 
-    public Id putIds(String mainurl, String hubId, String userName) throws IOException {
-        // String putBody="";
-        ArrayList<Id> idsList = getIds("/ids");
-        //   webber.putIds("/ids",list.get(2));
-
-        for (int i = 0; i < idsList.size(); i++) {
-            if (idsList.get(i).getGithub().equalsIgnoreCase(hubId)) {
-                idsList.get(i).setName(userName);
-                //String putBody = idsList.get(i).toString();
-                return idsList.get(i);
-            }
+    public Id putIds(String userId, String userName, String gitHub) throws IOException {
+        Id idOBject = new Id(userName, userId, gitHub);
+        return idCtrl.putId(idOBject);
 
 
-        }
-        return null;
+
+        //return null;
     }
 
 //    public String postMessagesURLCall(String from, String to, String message) throws IOException {
@@ -106,21 +98,7 @@ public class YouAreEll {
 //        return msgCtrl.postMessage(from,to,message);
 //
 //    }
-//    public Boolean decidePutORPostIds(String name,String gitHubId) throws IOException {
-//        Boolean found = false;
-//        String results="";
-//        ArrayList<Id> idsList = this.getIds("/ids");
-//        for (int i = 0; i < idsList.size(); i++) {
-//            if (idsList.get(i).getGithub().equalsIgnoreCase(gitHubId)) {
-//                idsList.get(i).setName(name);
-//                String putBody = idsList.get(i).toString();
-//                results = putIds("/ids", putBody);
-//                System.out.println(results);
-//                found = false;
-//            }
-//        }
-//        return found;
-//    }
+
 
     }
 

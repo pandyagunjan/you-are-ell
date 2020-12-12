@@ -93,28 +93,27 @@ public class SimpleShell {
                         continue;
                     } else {
                         if (list.get(0).equals("ids") && list.size() == 3) {
-
-                           // ArrayList<Id> idsList =  webber.getIds("/ids");
-                      //      Id IdForPut= webber.putIds("/ids",list.get(2), list.get(1));
-
-                          //  results = webber.putIds("/ids", putBody);
-                         //   System.out.println("\nPUT ID on the server:");
-                        //    SimpleShell.prettyPrintIds(IdForPut);
-//                            found=true;
-//                            continue;
-//
-//                            }
-//                              if(!found)
-//                              {
-                                  Id Idreturned=webber.postIds("/ids", list.get(1), list.get(2));
-                                  System.out.println("\nPosted ID on the server:");
-                                  SimpleShell.prettyPrintIds(Idreturned);
-                                  continue;
+                            ArrayList<Id> idsList = webber.getIds("/ids");
+                            for (int i = 0; i < idsList.size(); i++) {
+                                found=false;
+                                if (idsList.get(i).getGithub().equalsIgnoreCase(list.get(2))) {
+                                    Id IdForPut = webber.putIds( idsList.get(i).getUserid(),list.get(1), list.get(2));
+                                    System.out.println("\nPUT ID on the server:");
+                                    SimpleShell.prettyPrintIds(IdForPut);
+                                    found = true;
+                                    break;
                                 }
                             }
+                            if (!found) {
+                                Id Idreturned = webber.postIds(list.get(1), list.get(2));
+                                System.out.println("\nPosted ID on the server:");
+                                SimpleShell.prettyPrintIds(Idreturned);
+                                continue;
+                            }
                         }
+                    }
+                }
 
-                //    }
                 // messages
                 if (list.contains("messages")) {
                     if (list.get(0).equals("messages") && list.size() == 1) {

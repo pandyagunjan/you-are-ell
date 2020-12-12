@@ -1,14 +1,12 @@
 package controllers;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
 import okhttp3.*;
 
-import javax.swing.text.TabableView;
 
 public class IdController {
     Id myId;
@@ -17,7 +15,6 @@ public class IdController {
     private OkHttpClient client;
     private MediaType JSON;
     private TransactionController tCtrl;
-
     {
         try {
             tCtrl = new TransactionController();
@@ -36,12 +33,14 @@ public class IdController {
     public Id postId(Id id) throws IOException {
         //add your github id / name to be registered
         JSON = MediaType.parse("application/json; charset=utf-8");
+        String body = new ObjectMapper().writeValueAsString(id);
+//This (Below) was used earlier then learned about writeValueAsString
+//        String body = "\n{" +
+//                "\n\t\"userid\": \"" + id.getUserid() + "\"," +
+//                "\n\t\"name\": \"" + id.getName() + "\"," +
+//                "\n\t\"github\": \"" + id.getGithub() + "\"" +
+//                "\n}";
 
-        String body = "\n{" +
-                "\n\t\"userid\": \"" + id.getUserid() + "\"," +
-                "\n\t\"name\": \"" + id.getName() + "\"," +
-                "\n\t\"github\": \"" + id.getGithub() + "\"" +
-                "\n}";
         RequestBody json = RequestBody.create(JSON, body);
         Request request = new Request.Builder()
                 .url(IdsURL)
@@ -60,18 +59,19 @@ public class IdController {
         return IdObjWithUserId;
     }
 
-    public Id putId(Id id) {
+    public Id putId(Id id) throws IOException {
         //change the name linked to your githubID
-//        JSON = MediaType.parse("application/json; charset=utf-8");
-//        RequestBody json = RequestBody.create(JSON, putBody);
-//        Request request = new Request.Builder()
-//                .url(IdsURL)
-//                .put(json)
-//                .addHeader("Content-Type", "application/json")
-//                .build();
-//        Response responseAfterPut = client.newCall(request).execute();
-//        return responseAfterPut.body().string();
-        return null;
+        JSON = MediaType.parse("application/json; charset=utf-8");
+        String body = new ObjectMapper().writeValueAsString(id);
+        RequestBody json = RequestBody.create(JSON, body);
+        Request request = new Request.Builder()
+                .url(IdsURL)
+                .put(json)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        Response responseAfterPut = tCtrl.getClient().newCall(request).execute();
+        Id IdObjWithUserId = ConvertJSONToObject(responseAfterPut);
+        return IdObjWithUserId;
     }
 
 
