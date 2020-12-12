@@ -20,26 +20,7 @@ public class SimpleShell {
     private static MessageController msgCtrl;
     private static TransactionController transactionController;
 
-    public static void prettyPrintIds(String output) throws JsonProcessingException {
-        // yep, make an effort to format things nicely, eh?
-        idCtrl=new IdController();
-        ArrayList<Id> idsList = idCtrl.getIds(output);
-        System.out.println(" The Users Id List is as below:");
-        for (int i = 0; i <idsList.size(); i++) {
-            System.out.println(new IdTextView(idsList.get(i)).toString());
-        }
-    }
 
-    public static void prettyPrintMessages(String output) throws JsonProcessingException {
-        // yep, make an effort to format things nicely, eh?
-        msgCtrl=new MessageController();
-        ArrayList<Message> idsMessage = msgCtrl.getMessages(output);
-        System.out.println("\nThe Message Id List is as below:");
-        for (int i = 0; i < idsMessage.size(); i++) {
-            System.out.println(new MessageTextView(idsMessage.get(i)).toString());
-        }
-
-    }
     public static void main(String[] args) throws java.io.IOException {
         transactionController=new TransactionController();
         msgCtrl=new MessageController();
@@ -55,14 +36,7 @@ public class SimpleShell {
         //we break out with <ctrl c>
         while (true) {
             //read what the user enters
-            String get = "\nCOMMAND OPTIONS:\nTo get list of all users, type:      | ids |\nTo get list of all messages, type:   | messages |";
-            String postId = "\nTo create a new user id, type:       | ids | your-name | your-github |";
-            String putId ="\nTo change name for github, type:     | ids | new-name | same-github |";
-            String postMessage = "\nTo post message, type:               | send | your-github | 'your message' | to | recipient-github |";
-            String historyExit = "\nTo display shell history, type:      | history |\nTo exit, type:                       | exit |";
-            //need to add one for get messages spf to UserID
-            //and one for getting messages between 2 users
-            System.out.println(get + postId + putId + postMessage + historyExit);
+            displayCommandsMenu();
             System.out.println("cmd? ");
             commandLine = console.readLine();
             //input parsed into array of strings(command and arguments)
@@ -106,7 +80,7 @@ public class SimpleShell {
                                 if (idsList.get(i).getGithub().equalsIgnoreCase(list.get(2))) {
                                     Id IdForPut = webber.putIds( idsList.get(i).getUserid(),list.get(1), list.get(2));
                                     System.out.println("\nPUT ID on the server:");
-                                    SimpleShell.prettyPrintIds(IdForPut);
+                                    SimpleShell.prettyPrintIdsAsObject(IdForPut);
                                     found = true;
                                     break;
                                 }
@@ -114,7 +88,7 @@ public class SimpleShell {
                             if (!found) {
                                 Id Idreturned = webber.postIds(list.get(1), list.get(2));
                                 System.out.println("\nPosted ID on the server:");
-                                SimpleShell.prettyPrintIds(Idreturned);
+                                SimpleShell.prettyPrintIdsAsObject(Idreturned);
                                 continue;
                             }
                         }
@@ -138,6 +112,7 @@ public class SimpleShell {
                     }
 
                 }
+                //POST and PUT for messages are pending , will complete it later
 //                if (list.contains("send")) {
 //                    String fromId = list.get(1);
 //                    String message = list.get(2);
@@ -201,10 +176,39 @@ public class SimpleShell {
 
     }
 
-    private static void prettyPrintIds(Id idReturned) {
-        IdTextView toView= new IdTextView(idReturned);
-
-        System.out.println(toView.toString());
+    private static void displayCommandsMenu() {
+        String get = "\n******************COMMAND OPTIONS********************:\nTo get list of all users, type:      | ids |\nTo get list of all messages, type:   | messages |";
+        String postId = "\nTo create a new user id, type:       | ids | your-name | your-github |";
+        String putId ="\nTo change name for github, type:     | ids | new-name | same-github |";
+        String postMessage = "\nTo post message, type:               | send | your-github | 'your message' | to | recipient-github |";
+        String historyExit = "\nTo display shell history, type:      | history |\nTo exit, type:                       | exit |";
+        //need to add one for get messages spf to UserID
+        //and one for getting messages between 2 users
+        System.out.println(get + postId + putId + postMessage + historyExit);
     }
 
+    private static void prettyPrintIdsAsObject(Id idReturned) {
+        IdTextView toView= new IdTextView(idReturned);
+        System.out.println(toView.toString());
+    }
+    public static void prettyPrintIds(String output) throws JsonProcessingException {
+        // yep, make an effort to format things nicely, eh?
+        idCtrl=new IdController();
+        ArrayList<Id> idsList = idCtrl.getIds(output);
+        System.out.println(" The Users Id List is as below:");
+        for (int i = 0; i <idsList.size(); i++) {
+            System.out.println(new IdTextView(idsList.get(i)).toString());
+        }
+    }
+
+    public static void prettyPrintMessages(String output) throws JsonProcessingException {
+        // yep, make an effort to format things nicely, eh?
+        msgCtrl=new MessageController();
+        ArrayList<Message> idsMessage = msgCtrl.getMessages(output);
+        System.out.println("\nThe Message Id List is as below:");
+        for (int i = 0; i < idsMessage.size(); i++) {
+            System.out.println(new MessageTextView(idsMessage.get(i)).toString());
+        }
+
+    }
 }
