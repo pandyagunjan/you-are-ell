@@ -25,10 +25,9 @@ public class YouAreEll {
     public static void main(String[] args) throws IOException {
         // hmm: is this Dependency Injection?
         YouAreEll urlhandler = new YouAreEll(new MessageController(), new IdController(), new TransactionController());
-
-        //   String getIdsURL = urlhandler.MakeURLCall("/ids", "GET", "{\"userid\": ...}");
-
-        //Calling to display the ids
+ //Was used to test the methods
+//   String getIdsURL = urlhandler.MakeURLCall("/ids", "GET", "{\"userid\": ...}");
+//Calling to display the ids
 //        urlhandler.MakeURLCall("/ids", "GET", "");
 //        urlhandler.MakeURLCall("/messages", "GET", "");
 //        urlhandler.MakeURLCall("/ids", "POST", "");
@@ -80,26 +79,12 @@ public class YouAreEll {
     public Id postIds(String name, String yourGitHub) throws IOException {
         Id idOBject = new Id(name, "-", yourGitHub);
         return idCtrl.postId(idOBject);
-
     }
 
     public Id putIds(String userId, String userName, String gitHub) throws IOException {
         Id idOBject = new Id(userName, userId, gitHub);
         return idCtrl.putId(idOBject);
-
-
-
-        //return null;
     }
-
-//    public String postMessagesURLCall(String from, String to, String message) throws IOException {
-//        //return transactionController.post(from, to, message);
-//        getIds("/Ids"+from+)
-//        return msgCtrl.postMessage(from,to,message);
-//
-//    }
-
-
-    }
+ }
 
 
